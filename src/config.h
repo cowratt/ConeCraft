@@ -51,4 +51,7 @@
 #define CHUNK_SIZE 32
 #define COMMIT_INTERVAL 5
 
+//define block types
+#define GRASS 1
+
 #endif

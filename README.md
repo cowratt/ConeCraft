@@ -1,3 +1,8 @@
+## ConeCraft
+This is my attempt to spice up craft, a voxel-based game (Minecraft clone) written in C that has been slightly abandoned. I don't really know why I'm doing this. Maybe just for fun.
+
+Everything below here is the stock README.
+
 ## Craft
 
 Minecraft clone for Windows, Mac OS X and Linux. Just a few thousand lines of C using modern OpenGL (shaders). Online multiplayer support is included using a Python-based server.

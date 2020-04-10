@@ -1583,6 +1583,12 @@ void record_block(int x, int y, int z, int w) {
     g->block0.w = w;
 }
 
+//save one single line of code.
+void set_record_block(int x, int y, int z, int w, void* throwaway){
+    set_block(x, y, z, w);
+    record_block(x, y, z, w);
+}
+
 int get_block(int x, int y, int z) {
     int p = chunked(x);
     int q = chunked(z);
@@ -2164,13 +2170,19 @@ void on_left_click() {
 }
 
 void on_right_click() {
+    printf("%d\n", g->item_index);
     State *s = &g->players->state;
     int hx, hy, hz;
     int hw = hit_test(1, s->x, s->y, s->z, s->rx, s->ry, &hx, &hy, &hz);
     if (hy > 0 && hy < 256 && is_obstacle(hw)) {
         if (!player_intersects_block(2, s->x, s->y, s->z, hx, hy, hz)) {
-            set_block(hx, hy, hz, items[g->item_index]);
-            record_block(hx, hy, hz, items[g->item_index]);
+            if(g->item_index == 2){
+                gen_tree(hx,hy,hz, set_record_block, NULL);
+            }
+            else{
+                set_block(hx, hy, hz, items[g->item_index]);
+                record_block(hx, hy, hz, items[g->item_index]);
+            }
         }
     }
 }
@@ -2956,7 +2968,6 @@ int main(int argc, char **argv) {
                 snprintf(text_buffer, 1024, "misc:[%d, %d, %d] time: %d%cm %dfps", g->player_count, g->chunk_count,
                     face_count * 2, hour, am_pm, fps.fps); //player count, chunk count, block face count, time, fps
                 render_text(&text_attrib, ALIGN_LEFT, tx, ty - (2 * ts), ts, text_buffer); //rendering text_buffer
-                snprintf(team_info, 40, "Jose Bailey Jon Kerryanne"); //team member names
                 render_text(&text_attrib, ALIGN_LEFT, tx, ty - (4 * ts), ts, team_info); //render team_info
                 compass(&text_attrib, ALIGN_LEFT, tx, ty - (8 * ts), ts, xAxis); //render compass
                 snprintf(block_name_buffer, 40, item_names[g->item_index]); //block ID
